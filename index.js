@@ -3,7 +3,7 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 const line = require("@line/bot-sdk");
 
-const config = {
+const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
   channelSecret: process.env.LINE_SECRET_KEY
 };
@@ -15,7 +15,7 @@ express()
   // .get('/', (req, res) => res.render('pages/index'))
   // .get('/g/', (req, res) => res.json({ method: "get" }))
   // .post('/p/', (req, res) => res.json({ method: "posted" }))
-  .post("/linehook/", line.middleware(config), (req, res) => lineBot(req, res))
+  .post("/linehook/", line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const lineBot = (req, res) => {
@@ -29,9 +29,9 @@ const lineBot = (req, res) => {
 };
 
 const generateText = async (event) => {
-  const pro =  await client.getProfile(ev.source.userId);
-  return client.replyMessage(ev.replyToken, {
+  const pro =  await client.getProfile(event.source.userId);
+  return client.replyMessage(event.replyToken, {
     type: "text",
-    text: `${pro.displayName}\n${ev.message.text}`
+    text: `${pro.displayName}\n${event.message.text}`
   });
 };
