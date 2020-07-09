@@ -15,6 +15,7 @@ discordClient.on('message', async (event) => {
     if (
       event.author.username != 'Mr.Wombat'
       && event.channel.id == '720810848003686500'
+      && !event.author.bot
     ) {
       await lineClient.pushMessage(
         'C00292191febefd43a58ad477709683ea',
