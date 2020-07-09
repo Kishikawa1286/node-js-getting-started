@@ -30,7 +30,6 @@ express()
 const lineBot = async (req, res) => {
   res.status(200).end();
   const events = req.body.events;
-  // const promises = [];
   for (const event of events) {
     try {
       const profile =  await lineClient.getProfile(event.source.userId);
@@ -43,7 +42,7 @@ const lineBot = async (req, res) => {
         content: event.message.text,
       };
       const webhookRes = await axios.post(webhookUrl, postData, webhookConfig);
-      console.log(webhookRes);  
+      console.log(webhookRes);
     } catch(error) {
       console.error(error);
     }
