@@ -9,10 +9,10 @@ const lineConfig = {
 };
 
 express()
-  // .use(express.static(path.join(__dirname, 'public')))
-  // .set('views', path.join(__dirname, 'views'))
-  // .set('view engine', 'ejs')
-  // .get('/', (req, res) => res.render('pages/index'))
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
+  .get('/', (req, res) => res.render('pages/index'))
   // .get('/g/', (req, res) => res.json({ method: "get" }))
   // .post('/p/', (req, res) => res.json({ method: "posted" }))
   .post("/linehook/", line.middleware(lineConfig), (req, res) => lineBot(req, res))
