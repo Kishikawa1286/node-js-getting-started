@@ -17,21 +17,26 @@ express()
   .post("/linehook/", line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const lineBot = (req, res) => {
+const lineBot = async (req, res) => {
   res.status(200).end();
   const events = req.body.events;
   const promises = [];
   for (const event of events) {
-    promises.push(generateText(event));
+    // promises.push(generateText(event));
+    const profile =  await lineClient.getProfile(event.source.userId);
+    promises.push(lineClient.pushMessage(
+      "C00292191febefd43a58ad477709683ea",
+      { type: "text", text: `${profile.displayName}\n${event.message.text}` }
+    ));
   }
-  Promise.all(promises).then(console.log("promises were resolved successfully"));
+  Promise.all(promises).then(console.log("All promises were resolved successfully"));
 };
 
-const generateText = async (event) => {
-  const profile =  await lineClient.getProfile(event.source.userId);
-  console.log(`group id: ${event.source.groupId}`);
-  return lineClient.replyMessage(event.replyToken, {
-    type: "text",
-    text: `${profile.displayName}\n${event.message.text}`
-  });
-};
+// const generateText = async (event) => {
+//   const profile =  await lineClient.getProfile(event.source.userId);
+//   console.log(`reply token: ${event.source.grou}`);
+//   return lineClient.replyMessage(event.replyToken, {
+//     type: "text",
+//     text: `${profile.displayName}\n${event.message.text}`
+//   });
+// };
