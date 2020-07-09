@@ -28,8 +28,8 @@ const lineBot = (req, res) => {
 };
 
 const generateText = async (event) => {
-  const pro =  await client.getProfile(event.source.userId);
-  return client.replyMessage(event.replyToken, {
+  const pro =  await lineClient.getProfile(event.source.userId);
+  return lineClient.replyMessage(event.replyToken, {
     type: "text",
     text: `${pro.displayName}\n${event.message.text}`
   });
