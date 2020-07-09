@@ -1,2 +1,2 @@
 web: node index.js
-dicord: node discord.js
+dicord: node discordbot.js
