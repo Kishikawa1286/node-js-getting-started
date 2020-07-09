@@ -33,10 +33,6 @@ const lineBot = async (req, res) => {
   for (const event of events) {
     try {
       const profile =  await lineClient.getProfile(event.source.userId);
-      // promises.push(lineClient.pushMessage(
-      //   'C00292191febefd43a58ad477709683ea',
-      //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
-      // ));
       const postData = {
         username: profile.displayName,
         content: event.message.text,
