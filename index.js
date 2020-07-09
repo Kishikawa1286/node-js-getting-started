@@ -30,7 +30,7 @@ const lineBot = async (req, res) => {
     //   'C00292191febefd43a58ad477709683ea',
     //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
     // ));
-    await webhook.info(`${profile.displayName}\n${event.message.text}`);
+    await webhook.info('Message from LINE', `${profile.displayName}\n${event.message.text}`);
   }
   // Promise.all(promises).then(console.log('All promises were resolved successfully'));
 };
