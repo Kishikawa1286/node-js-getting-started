@@ -10,8 +10,12 @@ const lineClient = new line.Client(lineConfig);
 const discordClient = new discord.Client();
 
 discordClient.on('message', async (event) => {
+  console.log(`channel id: ${event.channel.id}`);
   try {
-    if (event.author.username != 'Mr.Wombat') {
+    if (
+      event.author.username != 'Mr.Wombat'
+      && event.channel.id == '720810848003686500'
+    ) {
       await lineClient.pushMessage(
         'C00292191febefd43a58ad477709683ea',
         { type: 'text', text: `${event.author.username}\n${event.content}` }
