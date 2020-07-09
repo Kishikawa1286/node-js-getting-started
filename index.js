@@ -29,7 +29,7 @@ const lineBot = (req, res) => {
 
 const generateText = async (event) => {
   const profile =  await lineClient.getProfile(event.source.userId);
-  console.log(`reply token: ${event.replyToken}`);
+  console.log(`reply token: ${event.source.groupId}`);
   return lineClient.replyMessage(event.replyToken, {
     type: "text",
     text: `${profile.displayName}\n${event.message.text}`
