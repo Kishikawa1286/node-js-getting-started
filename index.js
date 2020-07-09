@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
-const PORT = process.env.PORT || 5000;
 const line = require('@line/bot-sdk');
 const webhookDiscord = require('webhook-discord');
+
+const PORT = process.env.PORT || 5000;
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -26,12 +27,12 @@ const lineBot = async (req, res) => {
   // const promises = [];
   for (const event of events) {
     try {
-    const profile =  await lineClient.getProfile(event.source.userId);
-    // promises.push(lineClient.pushMessage(
-    //   'C00292191febefd43a58ad477709683ea',
-    //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
-    // ));
-    webhook.info('Message from LINE', `${profile.displayName}\n${event.message.text}`);
+      const profile =  await lineClient.getProfile(event.source.userId);
+      // promises.push(lineClient.pushMessage(
+      //   'C00292191febefd43a58ad477709683ea',
+      //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
+      // ));
+      webhook.info('Message from LINE', `${profile.displayName}\n${event.message.text}`);
     } catch(error) {
       console.error(error);
     }
