@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const line = require('@line/bot-sdk');
-const discordWebhook = require('discord-webhook-node');
-const { MessageBuilder } = require('discord-webook-node');
+const { Webhook, MessageBuilder } = require('discord-webhook-node');
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -11,7 +10,7 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const webhook = new discordWebhook.Webhook(process.env.DISCORD_WEBHOOK_URL);
+const webhook = new Webhook(process.env.DISCORD_WEBHOOK_URL);
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
