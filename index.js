@@ -7,14 +7,13 @@ const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
   channelSecret: process.env.LINE_SECRET_KEY
 };
+const lineClient = new line.Client(lineConfig);
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  // .get('/g/', (req, res) => res.json({ method: "get" }))
-  // .post('/p/', (req, res) => res.json({ method: "posted" }))
   .post("/linehook/", line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
