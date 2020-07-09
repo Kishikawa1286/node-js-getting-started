@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const line = require('@line/bot-sdk');
-const webhookDiscord = require('webhook-discord');
+const axios = require('axios');
 
 const PORT = process.env.PORT || 5000;
 
@@ -11,7 +11,13 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const webhook = new webhookDiscord.Webhook(process.env.DISCORD_WEBHOOK_URL);
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+const webhookConfig = {
+  headers: {
+    'Accept': 'application/json',
+    'Content-type': 'application/json',
+  }
+};
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -32,10 +38,14 @@ const lineBot = async (req, res) => {
       //   'C00292191febefd43a58ad477709683ea',
       //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
       // ));
-      webhook.info('Message from LINE', `${profile.displayName}\n${event.message.text}`);
+      const postData = {
+        username: profile.displayName,
+        content: event.message.text,
+      };
+      const webhookRes = await axios.post(webhookUrl, postData, webhookConfig);
+      console.log(webhookRes);  
     } catch(error) {
       console.error(error);
     }
   }
-  // Promise.all(promises).then(console.log('All promises were resolved successfully'));
 };
