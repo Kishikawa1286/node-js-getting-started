@@ -33,7 +33,7 @@ const lineBot = async (req, res) => {
     // const embed = new MessageBuilder()
     //   .setTitle('Message from LINE group')
     //   .addField('content', `${profile.displayName}\n${event.message.text}`, true);
-    webhook.send(`${profile.displayName}\n${event.message.text}`);
+    await webhook.send(`${profile.displayName}\n${event.message.text}`);
   }
   Promise.all(promises).then(console.log('All promises were resolved successfully'));
 };
