@@ -24,13 +24,14 @@ const lineBot = (req, res) => {
   for (const event of events) {
     promises.push(generateText(event));
   }
-  Promise.all(promises).then(console.log("pass"));
+  Promise.all(promises).then(console.log("promises were resolved successfully"));
 };
 
 const generateText = async (event) => {
-  const pro =  await lineClient.getProfile(event.source.userId);
+  const profile =  await lineClient.getProfile(event.source.userId);
+  console.log(`reply token: ${event.replyToken}`);
   return lineClient.replyMessage(event.replyToken, {
     type: "text",
-    text: `${pro.displayName}\n${event.message.text}`
+    text: `${profile.displayName}\n${event.message.text}`
   });
 };
