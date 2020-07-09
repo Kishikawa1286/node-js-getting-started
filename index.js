@@ -3,6 +3,7 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 const line = require('@line/bot-sdk');
 const discordWebhook = require('discord-webhook-node');
+console.log(discordWebhook);
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
