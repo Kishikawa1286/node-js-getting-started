@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const line = require('@line/bot-sdk');
-const discordWebhook = require('discord-webhook-node');
-console.log(discordWebhook);
+const webhookDiscord = require('webhook-discord');
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -11,7 +10,7 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const webhook = new discordWebhook.Webhook(process.env.DISCORD_WEBHOOK_URL);
+const webhook = new webhookDiscord.Webhook(process.env.DISCORD_WEBHOOK_URL);
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -24,17 +23,14 @@ express()
 const lineBot = async (req, res) => {
   res.status(200).end();
   const events = req.body.events;
-  const promises = [];
+  // const promises = [];
   for (const event of events) {
     const profile =  await lineClient.getProfile(event.source.userId);
     // promises.push(lineClient.pushMessage(
     //   'C00292191febefd43a58ad477709683ea',
     //   { type: 'text', text: `${profile.displayName}\n${event.message.text}` }
     // ));
-    // const embed = new MessageBuilder()
-    //   .setTitle('Message from LINE group')
-    //   .addField('content', `${profile.displayName}\n${event.message.text}`, true);
-    await webhook.send(`${profile.displayName}\n${event.message.text}`);
+    await webhook.info(`${profile.displayName}\n${event.message.text}`);
   }
-  Promise.all(promises).then(console.log('All promises were resolved successfully'));
+  // Promise.all(promises).then(console.log('All promises were resolved successfully'));
 };
