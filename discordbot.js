@@ -14,15 +14,13 @@ const generateMessage = (event) => {
   const attachments = event.attachments;
   // 画像あり
   if (attachments.length !== 0 && attachments) {
-    const images = {
-      messages: attachments.map((attachment) => {
-        return {
-          type: 'image',
-          originalContentUrl: attachment.url,
-          previewImageUrl: attachment.url,
-        };
-      }),
-    };
+    const images = attachments.map((attachment) => {
+      return {
+        type: 'image',
+        originalContentUrl: attachment.url,
+        previewImageUrl: attachment.url,
+      };
+    });
 
     // 画像のみ
     if (content.length === 0 || !content) return images;
