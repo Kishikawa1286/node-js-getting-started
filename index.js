@@ -43,35 +43,35 @@ const generatePostData = async (event, username) => {
         content: `${username} send a sticker.`,
       };
     case 'image':
-      const response = await axios.get(
-        `https://api.line.me/v2/bot/message/${event.message.id}/content`,
-        {
-          responseType: 'arraybuffer',
-          headers: {
-            'Content-Type': 'image/jpg',
-            Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
-          },
-        },
-      );
+      // const response = await axios.get(
+      //   `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+      //   {
+      //     responseType: 'arraybuffer',
+      //     headers: {
+      //       'Content-Type': 'image/jpg',
+      //       Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
+      //     },
+      //   },
+      // );
 
-      if (response.status !== 200) {
-        throw Error(`failed to get image  status: ${response.status}`);
-      }
-      console.log('successfully get image');
+      // if (response.status !== 200) {
+      //   throw Error(`failed to get image  status: ${response.status}`);
+      // }
+      // console.log('successfully get image');
 
-      const encodedData = Buffer.from(response.data, 'binary');
-      try {
-        fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
-      } catch(error) {
-        console.log('image.jpg does not exist.');
-      }
-      fs.writeFileSync('./image.jpg', encodedData, 'binary');
+      // const encodedData = Buffer.from(response.data, 'binary');
+      // try {
+      //   fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
+      // } catch(error) {
+      //   console.log('image.jpg does not exist.');
+      // }
+      // fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
       return {
         username,
         embeds: [{
           image: {
-            url: './image.jpg',
+            url: 'https://qiita-user-profile-images.imgix.net/https%3A%2F%2Fqiita-image-store.s3.amazonaws.com%2F0%2F189206%2Fprofile-images%2F1524018353?ixlib=rb-1.2.2&auto=compress%2Cformat&lossless=0&w=48&s=3af99c4a18c5b436ebd19a88e7d370f0',
           }
         }],
       };
