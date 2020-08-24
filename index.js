@@ -58,13 +58,12 @@ const generatePostData = async (event, username) => {
       }
 
       const body = response.body;
-      // 画像ファイルがない場合のエラーをcatchする用
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
         console.log('image.jpg does not exist.');
       }
-      fs.writeFileSync('./image.jpg', new Buffer(body), 'binary');
+      fs.writeFileSync('./image.jpg', Buffer.from(body), 'binary');
 
       return {
         username,
