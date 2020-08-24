@@ -65,7 +65,7 @@ const generatePostData = async (event, username) => {
       } catch(error) {
         console.log('image.jpg does not exist.');
       }
-      fs.writeFileSync('./image.jpg', Buffer.from(body), 'binary');
+      fs.writeFileSync('./image.jpg', body, 'binary');
 
       return {
         username,
