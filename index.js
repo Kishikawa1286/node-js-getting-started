@@ -93,7 +93,7 @@ const lineBot = async (req, res) => {
       // DiscordのWebHookにPOSTする
       await axios.post(webhookUrl, postData, webhookConfig);
     } catch(error) {
-      // console.error(error);
+      console.error(error);
     }
   });
 };
