@@ -12,6 +12,7 @@ const discordClient = new discord.Client();
 const generateMessage = (event) => {
   const content = event.content;
   const attachments = event.attachments;
+  console.log(attachments[0]);
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
@@ -28,7 +29,7 @@ const generateMessage = (event) => {
     // 画像とテキスト
     const imagesWithText = images.push({
       type: 'text',
-      text: `${event.author.username})\n${content}`,
+      text: `(${event.author.username})\n${content}`,
     });
     return imagesWithText;
   }
@@ -37,7 +38,7 @@ const generateMessage = (event) => {
   if (content.length !== 0 && content) {
     return {
       type: 'text',
-      text: `${event.author.username})\n${content}`,
+      text: `(${event.author.username})\n${content}`,
     };
   }
   
