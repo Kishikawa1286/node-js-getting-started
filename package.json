@@ -16,7 +16,8 @@
     "discord.js": "^12.2.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "gyazo-api": "^0.3.1"
   },
   "devDependencies": {
     "got": "^11.3.0",
