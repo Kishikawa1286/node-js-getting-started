@@ -11,18 +11,17 @@ const discordClient = new discord.Client();
 
 const generateMessage = (event) => {
   const content = event.content;
-  const attachments = [event.attachments.values()];
+  const attachments = [event.attachments.values().map((attachment) => Array.from(attachment)[0])];
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
-      const attachmentContent = Array.from(attachment)[0];
-      if (attachmentContent.name.match(/.*\.jpg | .*\.png | .*\.jpeg/)) {
+      // if (attachment.name.match(/.*\.jpg | .*\.png | .*\.jpeg/)) {
         return {
           type: 'image',
-          originalContentUrl: attachmentContent.url,
-          previewImageUrl: attachmentContent.url,
+          originalContentUrl: attachment.url,
+          previewImageUrl: attachment.url,
         };
-      }
+      // }
       return null;
     }).filter((item) => item !== null);
 
