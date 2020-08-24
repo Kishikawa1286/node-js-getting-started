@@ -15,15 +15,22 @@ const generateMessage = (event) => {
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
-      // if (attachment.name.match(/.*\.jpg | .*\.png | .*\.jpeg/)) {
+      if (attachment.name.match(/.+\.(jpg|png|gif|jpeg)/)) {
         return {
           type: 'image',
           originalContentUrl: attachment.url,
           previewImageUrl: attachment.url,
         };
-      // }
+      }
       return null;
     }).filter((item) => item !== null);
+
+    if (images.length === 0) {
+      return {
+        type: 'text',
+        text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
+      };
+    }
 
     // 画像のみ
     if (content.length === 0 || !content) return images;
