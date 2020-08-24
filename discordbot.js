@@ -19,7 +19,7 @@ const generateMessage = (event) => {
     case 'DEFAULT':
       const url = event.attachments.attachment;
       console.log(event.attachments);
-      console.log(event.attachments.attachment);
+      console.log(event.attachments.Collection);
       // return {
       //   type: 'image',
       //   originalContentUrl: url,
