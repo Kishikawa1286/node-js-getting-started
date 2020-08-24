@@ -17,14 +17,17 @@ const generateMessage = (event) => {
         text: `(${event.author.username})\n${event.content}`
       };
     case 'DEFAULT':
-      const url = event.attachments.attachment;
-      console.log(event.attachments);
-      console.log(event.attachments.Collection);
-      // return {
-      //   type: 'image',
-      //   originalContentUrl: url,
-      //   previewImageUrl: url,
-      // }
+      const attachments = event.attachments;
+      const images = {
+        messages: attachments.map((attachment) => {
+          return {
+            type: 'image',
+            originalContentUrl: attachment.url,
+            previewImageUrl: attachment.url,
+          };
+        }),
+      };
+      return images;
     default:
       return {
         type: 'text',
