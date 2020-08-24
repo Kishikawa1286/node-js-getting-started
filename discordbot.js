@@ -14,25 +14,25 @@ const generateMessage = (event) => {
   const attachments = [event.attachments.values()];
   console.log(attachments[0]);
   // 画像あり
-  if (attachments[0]) {
-    const images = attachments.map((attachment) => {
-      return {
-        type: 'image',
-        originalContentUrl: attachment.url,
-        previewImageUrl: attachment.url,
-      };
-    });
+  // if (attachments[0]) {
+  //   const images = attachments.map((attachment) => {
+  //     return {
+  //       type: 'image',
+  //       originalContentUrl: attachment.url,
+  //       previewImageUrl: attachment.url,
+  //     };
+  //   });
 
-    // 画像のみ
-    if (content.length === 0 || !content) return images;
+  //   // 画像のみ
+  //   if (content.length === 0 || !content) return images;
 
-    // 画像とテキスト
-    const imagesWithText = images.push({
-      type: 'text',
-      text: `(${event.author.username})\n${content}`,
-    });
-    return imagesWithText;
-  }
+  //   // 画像とテキスト
+  //   const imagesWithText = images.push({
+  //     type: 'text',
+  //     text: `(${event.author.username})\n${content}`,
+  //   });
+  //   return imagesWithText;
+  // }
   
   // テキストのみ
   if (content.length !== 0 && content) {
