@@ -14,7 +14,7 @@ const generateMessage = (event) => {
   const attachments = event.attachments.values();
   console.log(attachments[0]);
   // 画像あり
-  if (attachments[0].url) {
+  if (attachments[0]) {
     const images = attachments.map((attachment) => {
       return {
         type: 'image',
