@@ -15,7 +15,8 @@
     "axios": "^0.19.2",
     "discord.js": "^12.2.0",
     "ejs": "^2.5.6",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "fs": "0.0.1-security"
   },
   "devDependencies": {
     "got": "^11.3.0",

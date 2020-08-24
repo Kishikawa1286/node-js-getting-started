@@ -1,7 +1,8 @@
-const express = require('express');
+  const express = require('express');
 const path = require('path');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 5000;
 
@@ -27,38 +28,54 @@ express()
   .post('/linehook/', line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const generatePostData = (event, username) => {
+const generatePostData = async (event, username) => {
   // 画像 / テキスト / スタンプ / それ以外で分岐させる
   const type = event.message.type;
   switch (type) {
-    case "text":
+    case 'text':
       return {
         username,
         content: event.message.text,
       };
-    case "sticker":
+    case 'sticker':
       return {
         username,
         content: `${username} send a sticker.`,
       };
-    case "image":
-      console.log(event.message);
-      // return {
-      //   username,
-      //   embeds: [{
-      //     image: {
-      //       url: event.message.image,
-      //     }
-      //   }],
-      // };
-    case "video":
-      console.log(event.message);
-      // return {
-      //   username,
-      //   embeds: [{
-      //     url: event.message.url,
-      //   }],
-      // };
+    case 'image':
+      try {
+        const response = await axios.get(
+          'https://api.line.me/v2/bot/message/{messageId}/content',
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
+            },
+            encoding: null,
+          },
+        );
+        if (response.status !== 200) {
+          throw Error(`failed to get image  status: ${response.status}`);
+        }
+        const body = response.body;
+        // 画像ファイルがない場合のエラーをcatchする用
+        try {
+          fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
+        } catch(error) {
+          console.error(error);
+        }
+        fs.writeFileSync('./image.jpg', new Buffer(body), 'binary');
+        return {
+          username,
+          embeds: [{
+            image: {
+              url: `./image.jpg`,
+            }
+          }],
+        };
+      } catch(error) {
+        console.error(error);
+      }
+      break;
     default:
       return {
         username,
@@ -74,8 +91,7 @@ const lineBot = async (req, res) => {
   events.forEach(async (event) => {
     try {
       const profile =  await lineClient.getProfile(event.source.userId);
-
-      const postData = generatePostData(event, profile.displayName);
+      const postData = await generatePostData(event, profile.displayName);
       // DiscordのWebHookにPOSTする
       await axios.post(webhookUrl, postData, webhookConfig);
     } catch(error) {
