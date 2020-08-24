@@ -43,7 +43,6 @@ const generatePostData = (event, username) => {
       };
     case "image":
       console.log(event.message);
-      break;
       // return {
       //   username,
       //   embeds: [{
@@ -54,7 +53,6 @@ const generatePostData = (event, username) => {
       // };
     case "video":
       console.log(event.message);
-      break;
       // return {
       //   username,
       //   embeds: [{
@@ -64,7 +62,7 @@ const generatePostData = (event, username) => {
     default:
       return {
         username,
-        content: `${profile.displayName} send a message except sticker, text, image and video.`,
+        content: `${profile.displayName} send a message except sticker and text.`,
       };
   }
 };
