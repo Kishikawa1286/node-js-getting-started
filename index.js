@@ -77,7 +77,7 @@ const generatePostData = async (event, username) => {
       );
       console.log(responseOfUploadingImage);
       console.log('Successfully uploaded image to Gyazo.');
-      const gyazoUrl = responseOfUploadingImage.data.permalink_url;
+      const gyazoUrl = `${responseOfUploadingImage.data.permalink_url}.jpg`;
       console.log(`permalink: ${gyazoUrl}`);
 
       return {
