@@ -49,7 +49,6 @@ const generatePostData = async (event, username) => {
           headers: {
             Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
           },
-          encoding: null,
         },
       );
       console.log('successfully get image');
