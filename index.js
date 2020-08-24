@@ -71,7 +71,7 @@ const lineBot = async (req, res) => {
   res.status(200).end(); // 'status 200'をまず送信
 
   const events = req.body.events;
-  events.forEach((event) => {
+  events.forEach(async (event) => {
     try {
       const profile =  await lineClient.getProfile(event.source.userId);
 
