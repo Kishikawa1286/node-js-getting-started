@@ -9,17 +9,23 @@ const lineClient = new line.Client(lineConfig);
 
 const discordClient = new discord.Client();
 
+const generateMessage = (event) => {
+  console.log(event);
+};
+
 discordClient.on('message', async (event) => {
   try {
     if (
+      // BOT自身のメッセージはスルー
       event.author.username != 'Mr.Wombat'
-      // 自前のサーバーのチャンネルのID
-      && event.channel.id == '720810848003686500'
       && !event.author.bot
+      // 自前のサーバーのチャンネルのID
+      && event.channel.id == process.env.DISCORD_CHANNEL_ID
     ) {
+      const message = generateMessage(event);
       await lineClient.pushMessage(
         // 自前のグループのID
-        'C00292191febefd43a58ad477709683ea',
+        process.env.LINE_GROUP_ID,
         { type: 'text', text: `(${event.author.username})\n${event.content}` }
       );
     }
