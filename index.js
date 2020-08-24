@@ -67,14 +67,14 @@ const generatePostData = async (event, username) => {
       }
       fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
-      // return {
-      //   username,
-      //   embeds: [{
-      //     image: {
-      //       url: './image.jpg',
-      //     }
-      //   }],
-      // };
+      return {
+        username,
+        embeds: [{
+          image: {
+            url: './image.jpg',
+          }
+        }],
+      };
     default:
       return {
         username,
