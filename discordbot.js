@@ -10,30 +10,44 @@ const lineClient = new line.Client(lineConfig);
 const discordClient = new discord.Client();
 
 const generateMessage = (event) => {
-  switch (event.type) {
-    case 'text':
-      return {
-        type: 'text',
-        text: `(${event.author.username})\n${event.content}`
-      };
-    case 'DEFAULT':
-      const attachments = event.attachments;
-      const images = {
-        messages: attachments.map((attachment) => {
-          return {
-            type: 'image',
-            originalContentUrl: attachment.url,
-            previewImageUrl: attachment.url,
-          };
-        }),
-      };
-      return images;
-    default:
-      return {
-        type: 'text',
-        text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
-      };
+  const content = event.content;
+  const attachments = event.attachments;
+  // 画像あり
+  if (attachments.length !== 0 && attachments) {
+    const images = {
+      messages: attachments.map((attachment) => {
+        return {
+          type: 'image',
+          originalContentUrl: attachment.url,
+          previewImageUrl: attachment.url,
+        };
+      }),
+    };
+
+    // 画像のみ
+    if (content.length === 0 || !content) return images;
+
+    // 画像とテキスト
+    const imagesWithText = images.push({
+      type: 'text',
+      text: `${event.author.username})\n${content}`,
+    });
+    return imagesWithText;
   }
+  
+  // テキストのみ
+  if (content.length !== 0 && content) {
+    return {
+      type: 'text',
+      text: `${event.author.username})\n${content}`,
+    };
+  }
+  
+  // 例外
+  return {
+    type: 'text',
+    text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
+  };
 };
 
 discordClient.on('message', async (event) => {
