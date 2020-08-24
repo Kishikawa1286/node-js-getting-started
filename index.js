@@ -53,20 +53,19 @@ const generatePostData = async (event, username) => {
           },
         },
       );
-      console.log('successfully get image');
 
       if (response.status !== 200) {
         throw Error(`failed to get image  status: ${response.status}`);
       }
+      console.log('successfully get image');
 
-      const body = response.body;
-      print (typeof body);
+      const encodedData = Buffer.from(response.data, 'binary');
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
         console.log('image.jpg does not exist.');
       }
-      fs.writeFileSync('./image.jpg', body, 'binary');
+      fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
       // return {
       //   username,
