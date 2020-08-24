@@ -13,7 +13,7 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const gyazoClient = Ggyazo(process.env.GYAZO_ACCESS_TOKEN);
+const gyazoClient = Gyazo(process.env.GYAZO_ACCESS_TOKEN);
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 const webhookConfig = {
