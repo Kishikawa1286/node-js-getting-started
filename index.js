@@ -70,7 +70,7 @@ const generatePostData = async (event, username) => {
       }
       fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
-      const responseOfUploadingImage = gyazoClient.upload(
+      const responseOfUploadingImage = await gyazoClient.upload(
         './image.jpg',
         {
           title: 'image',
