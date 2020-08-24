@@ -11,7 +11,12 @@ const discordClient = new discord.Client();
 
 const generateMessage = (event) => {
   const content = event.content;
-  const attachments = [event.attachments.values()].map((attachment) => Array.from(attachment)[0]);
+  const attachments = [event.attachments.values()].map(
+    (attachment) => Array.from(
+      attachment.map((content) => Array.from(content))
+    )
+  );
+  console.log(attachments);
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
@@ -28,7 +33,7 @@ const generateMessage = (event) => {
     if (images.length === 0) {
       return {
         type: 'text',
-        text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
+        text: `Discordで ${event.author.username} が非対応の形式のファイルを送信しました。`
       };
     }
 
