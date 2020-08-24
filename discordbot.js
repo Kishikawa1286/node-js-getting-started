@@ -36,12 +36,12 @@ const generateMessage = (event) => {
     if (content.length === 0 || !content) return images;
 
     // 画像とテキスト
-    const imagesWithText = [
-        images.concat([{
+    const imagesWithText = images.concat(
+      [{
         type: 'text',
         text: `(${event.author.username})\n${content}`,
-      }]),
-    ];
+      }]
+    );
     return imagesWithText;
   }
   
