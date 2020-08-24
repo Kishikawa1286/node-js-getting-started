@@ -34,6 +34,7 @@ const generatePostData = async (event, username) => {
   const type = event.message.type;
   switch (type) {
     case 'text':
+      console.log(event.message);
       return {
         username,
         content: event.message.text,
@@ -75,7 +76,6 @@ const generatePostData = async (event, username) => {
           desc: 'uploaded from mrwombat',
         },
       );
-      console.log(responseOfUploadingImage);
       console.log('Successfully uploaded image to Gyazo.');
       const gyazoUrl = `${responseOfUploadingImage.data.permalink_url}.jpg`;
       console.log(`permalink: ${gyazoUrl}`);
