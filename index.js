@@ -1,4 +1,4 @@
-  const express = require('express');
+const express = require('express');
 const path = require('path');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
@@ -53,6 +53,7 @@ const generatePostData = async (event, username) => {
             encoding: null,
           },
         );
+        console.log("successfully get image");
         if (response.status !== 200) {
           throw Error(`failed to get image  status: ${response.status}`);
         }
@@ -85,7 +86,7 @@ const generatePostData = async (event, username) => {
 };
 
 const lineBot = async (req, res) => {
-  res.status(200).end(); // 'status 200'をまず送信
+  res.status(200).end(); // 'status 200'をLINEのAPIに送信
 
   const events = req.body.events;
   events.forEach(async (event) => {
