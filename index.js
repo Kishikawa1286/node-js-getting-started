@@ -75,12 +75,7 @@ const generatePostData = async (event, username) => {
           desc: 'uploaded from mrwombat',
         },
       );
-      console.log(gyazoApi);
-      console.log(`typeof gyazoClient: ${typeof gyazoClient}`);
-      console.log(gyazoClient);
-      if (responseOfUploadingImage.status !== 200) {
-        throw new Error(`Failed to upload image to Gyazo. status: ${responseOfUploadingImage.status}`);
-      }
+      console.log(responseOfUploadingImage);
       console.log('Successfully uploaded image to Gyazo.');
       const gyazoUrl = responseOfUploadingImage.data.permalink_url;
       console.log(`permalink: ${gyazoUrl}`);
