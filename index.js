@@ -39,7 +39,7 @@ const generatePostData = (event, username) => {
     case "sticker":
       return {
         username,
-        content: `${profile.displayName} send a sticker.`,
+        content: `${username} send a sticker.`,
       };
     case "image":
       console.log(event.message);
@@ -62,7 +62,7 @@ const generatePostData = (event, username) => {
     default:
       return {
         username,
-        content: `${profile.displayName} send a message except sticker and text.`,
+        content: `${username} send a message except sticker and text.`,
       };
   }
 };
