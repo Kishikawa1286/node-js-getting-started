@@ -12,7 +12,7 @@ const discordClient = new discord.Client();
 const generateMessage = (event) => {
   const content = event.content;
   const attachments = event.attachments;
-  console.log(`attachments: ${attachments}`);
+  console.log(`attachments: ${attachments[0]}`);
   // 画像あり
   if (attachments.length !== 0 && attachments) {
     const images = attachments.map((attachment) => {
