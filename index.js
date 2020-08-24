@@ -44,7 +44,7 @@ const generatePostData = async (event, username) => {
       };
     case 'image':
       const response = await axios.get(
-        'https://api.line.me/v2/bot/message/{messageId}/content',
+        `https://api.line.me/v2/bot/message/${event.message.id}/content`,
         {
           headers: {
             Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
