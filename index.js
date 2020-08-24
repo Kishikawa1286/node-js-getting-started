@@ -13,7 +13,7 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const client = new Gyazo(process.env.GYAZO_ACCESS_TOKEN);
+const gyazoClient = new Gyazo(process.env.GYAZO_ACCESS_TOKEN);
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 const webhookConfig = {
@@ -66,17 +66,19 @@ const generatePostData = async (event, username) => {
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
-        console.log('Tried to delete image.jpg but it did not exist.');
+        console.log('Tried to delete old image.jpg but it did not exist.');
       }
       fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
-      const responseOfUploadingImage = await client.upload(
+      const responseOfUploadingImage = await gyazoClient.upload(
         './image.jpg',
         {
           title: 'image',
           desc: 'uploaded from mrwombat',
         },
       );
+      console.log(`typeof gyazoClient: ${typeof gyazoClient}`);
+      console.log(gyazoClient);
       if (responseOfUploadingImage.status !== 200) {
         throw new Error(`Failed to upload image to Gyazo. status: ${responseOfUploadingImage.status}`);
       }
