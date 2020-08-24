@@ -3,7 +3,7 @@ const path = require('path');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
 const fs = require('fs');
-const gyazoApi = require('gyazo-api');
+const GyazoApi = require('gyazo-api');
 const PORT = process.env.PORT || 5000;
 
 const lineConfig = {
@@ -11,7 +11,7 @@ const lineConfig = {
   channelSecret: process.env.LINE_SECRET_KEY
 };
 const lineClient = new line.Client(lineConfig);
-const gyazoClient = new gyazoApi(process.env.GYAZO_ACCESS_TOKEN);
+const gyazoClient = new GyazoApi(process.env.GYAZO_ACCESS_TOKEN);
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 const webhookConfig = {
