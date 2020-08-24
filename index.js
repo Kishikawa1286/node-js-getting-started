@@ -27,20 +27,62 @@ express()
   .post('/linehook/', line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-const lineBot = async (req, res) => {
-  res.status(200).end();
-  const events = req.body.events;
-  for (const event of events) {
-    try {
-      const profile =  await lineClient.getProfile(event.source.userId);
-      const postData = {
-        username: profile.displayName,
+const generatePostData = (event, username) => {
+  // 画像 / テキスト / スタンプ / それ以外で分岐させる
+  const type = event.message.type;
+  switch (type) {
+    case "text":
+      return {
+        username,
         content: event.message.text,
       };
+    case "sticker":
+      return {
+        username,
+        content: `${profile.displayName} send a sticker.`,
+      };
+    case "image":
+      console.log(event.message);
+      break;
+      // return {
+      //   username,
+      //   embeds: [{
+      //     image: {
+      //       url: event.message.image,
+      //     }
+      //   }],
+      // };
+    case "video":
+      console.log(event.message);
+      break;
+      // return {
+      //   username,
+      //   embeds: [{
+      //     url: event.message.url,
+      //   }],
+      // };
+    default:
+      return {
+        username,
+        content: `${profile.displayName} send a message except sticker, text, image and video.`,
+      };
+  }
+};
+
+const lineBot = async (req, res) => {
+  res.status(200).end(); // 'status 200'をまず送信
+
+  const events = req.body.events;
+  events.forEach((event) => {
+    try {
+      const profile =  await lineClient.getProfile(event.source.userId);
+
+      const postData = generatePostData(event, profile.displayName);
+      // DiscordのWebHookにPOSTする
       const webhookRes = await axios.post(webhookUrl, postData, webhookConfig);
       console.log(webhookRes);
     } catch(error) {
       console.error(error);
     }
-  }
+  });
 };
