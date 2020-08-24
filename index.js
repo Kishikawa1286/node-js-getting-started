@@ -52,13 +52,13 @@ const generatePostData = async (event, username) => {
         },
       );
       console.log('successfully get image');
+      console.log(response);
 
       if (response.status !== 200) {
         throw Error(`failed to get image  status: ${response.status}`);
       }
 
       const body = response.body;
-      console.log(body);
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
