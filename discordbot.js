@@ -12,7 +12,6 @@ const discordClient = new discord.Client();
 const generateMessage = (event) => {
   const content = event.content;
   const attachments = Array.from(event.attachments.values());
-  console.log(attachments);
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
