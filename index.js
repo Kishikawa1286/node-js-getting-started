@@ -62,7 +62,7 @@ const generatePostData = async (event, username) => {
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
-        console.error(error);
+        console.log('image.jpg does not exist.');
       }
       fs.writeFileSync('./image.jpg', new Buffer(body), 'binary');
 
