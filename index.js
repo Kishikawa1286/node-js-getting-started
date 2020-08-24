@@ -3,7 +3,7 @@ const path = require('path');
 const line = require('@line/bot-sdk');
 const axios = require('axios');
 const fs = require('fs');
-const Gyazo = require("gyazo-api");
+var Gyazo  = require('gyazo-api');
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,7 +13,7 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);
 
-const gyazoClient = new Gyazo(process.env.GYAZO_ACCESS_TOKEN);
+const client = new Gyazo(process.env.GYAZO_ACCESS_TOKEN);
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 const webhookConfig = {
@@ -58,7 +58,7 @@ const generatePostData = async (event, username) => {
       );
 
       if (responseOfGettingImage.status !== 200) {
-        throw Error(`Failed to get image. status: ${responseOfGettingImage.status}`);
+        throw new Error(`Failed to get image. status: ${responseOfGettingImage.status}`);
       }
       console.log('Successfully get image.');
 
@@ -66,11 +66,11 @@ const generatePostData = async (event, username) => {
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
-        console.log('image.jpg does not exist.');
+        console.log('Tried to delete image.jpg but it did not exist.');
       }
       fs.writeFileSync('./image.jpg', encodedData, 'binary');
 
-      const responseOfUploadingImage = await gyazoClient.upload(
+      const responseOfUploadingImage = await client.upload(
         './image.jpg',
         {
           title: 'image',
@@ -78,7 +78,7 @@ const generatePostData = async (event, username) => {
         },
       );
       if (responseOfUploadingImage.status !== 200) {
-        throw Error(`Failed to upload image to Gyazo. status: ${responseOfUploadingImage.status}`);
+        throw new Error(`Failed to upload image to Gyazo. status: ${responseOfUploadingImage.status}`);
       }
       console.log('Successfully uploaded image to Gyazo.');
       const gyazoUrl = responseOfUploadingImage.data.permalink_url;
