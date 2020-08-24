@@ -12,15 +12,15 @@ const discordClient = new discord.Client();
 const generateMessage = (event) => {
   const content = event.content;
   const attachments = [event.attachments.values()];
-  console.log(Array.from(attachments[0]));
   // 画像あり
   if (attachments[0]) {
     const images = attachments.map((attachment) => {
-      if (attachment[0].name.match(/.*\.jpg | .*\.png | .*\.jpeg/)) {
+      const attachmentContent = Array.from(attachment)[0];
+      if (attachmentContent.name.match(/.*\.jpg | .*\.png | .*\.jpeg/)) {
         return {
           type: 'image',
-          originalContentUrl: attachment[0].url,
-          previewImageUrl: attachment[0].url,
+          originalContentUrl: attachmentContent.url,
+          previewImageUrl: attachmentContent.url,
         };
       }
       return null;
