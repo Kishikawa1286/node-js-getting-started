@@ -77,8 +77,7 @@ const lineBot = async (req, res) => {
 
       const postData = generatePostData(event, profile.displayName);
       // DiscordのWebHookにPOSTする
-      const webhookRes = await axios.post(webhookUrl, postData, webhookConfig);
-      console.log(webhookRes);
+      await axios.post(webhookUrl, postData, webhookConfig);
     } catch(error) {
       console.error(error);
     }
