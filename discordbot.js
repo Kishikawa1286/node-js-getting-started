@@ -11,6 +11,27 @@ const discordClient = new discord.Client();
 
 const generateMessage = (event) => {
   console.log(event);
+  switch (event.type) {
+    case 'text':
+      return {
+        type: 'text',
+        text: `(${event.author.username})\n${event.content}`
+      };
+    case 'DEFAULT':
+      const url = event.attachments.attachment;
+      console.log(event.attachments);
+      console.log(event.attachment);
+      // return {
+      //   type: 'image',
+      //   originalContentUrl: url,
+      //   previewImageUrl: url,
+      // }
+    default:
+      return {
+        type: 'text',
+        text: `${event.author.username}) が非対応の形式のメッセージを送信しました。`
+      };
+  }
 };
 
 discordClient.on('message', async (event) => {
@@ -26,7 +47,7 @@ discordClient.on('message', async (event) => {
       await lineClient.pushMessage(
         // 自前のグループのID
         process.env.LINE_GROUP_ID,
-        { type: 'text', text: `(${event.author.username})\n${event.content}` }
+        message,
       );
     }
   } catch(error) {
