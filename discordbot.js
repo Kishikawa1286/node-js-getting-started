@@ -10,7 +10,6 @@ const lineClient = new line.Client(lineConfig);
 const discordClient = new discord.Client();
 
 const generateMessage = (event) => {
-  console.log(event);
   switch (event.type) {
     case 'text':
       return {
@@ -29,7 +28,7 @@ const generateMessage = (event) => {
     default:
       return {
         type: 'text',
-        text: `${event.author.username}) が非対応の形式のメッセージを送信しました。`
+        text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
       };
   }
 };
