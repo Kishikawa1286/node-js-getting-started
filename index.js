@@ -58,6 +58,7 @@ const generatePostData = async (event, username) => {
       }
 
       const body = response.body;
+      console.log(body);
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
