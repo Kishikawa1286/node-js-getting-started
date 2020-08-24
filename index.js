@@ -43,40 +43,38 @@ const generatePostData = async (event, username) => {
         content: `${username} send a sticker.`,
       };
     case 'image':
-      try {
-        const response = await axios.get(
-          'https://api.line.me/v2/bot/message/{messageId}/content',
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
-            },
-            encoding: null,
+      const response = await axios.get(
+        'https://api.line.me/v2/bot/message/{messageId}/content',
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
           },
-        );
-        console.log("successfully get image");
-        if (response.status !== 200) {
-          throw Error(`failed to get image  status: ${response.status}`);
-        }
-        const body = response.body;
-        // 画像ファイルがない場合のエラーをcatchする用
-        try {
-          fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
-        } catch(error) {
-          console.error(error);
-        }
-        fs.writeFileSync('./image.jpg', new Buffer(body), 'binary');
-        return {
-          username,
-          embeds: [{
-            image: {
-              url: `./image.jpg`,
-            }
-          }],
-        };
+          encoding: null,
+        },
+      );
+      console.log('successfully get image');
+
+      if (response.status !== 200) {
+        throw Error(`failed to get image  status: ${response.status}`);
+      }
+
+      const body = response.body;
+      // 画像ファイルがない場合のエラーをcatchする用
+      try {
+        fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
         console.error(error);
       }
-      break;
+      fs.writeFileSync('./image.jpg', new Buffer(body), 'binary');
+
+      return {
+        username,
+        embeds: [{
+          image: {
+            url: './image.jpg',
+          }
+        }],
+      };
     default:
       return {
         username,
@@ -96,7 +94,7 @@ const lineBot = async (req, res) => {
       // DiscordのWebHookにPOSTする
       await axios.post(webhookUrl, postData, webhookConfig);
     } catch(error) {
-      console.error(error);
+      // console.error(error);
     }
   });
 };
