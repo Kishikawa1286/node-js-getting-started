@@ -46,13 +46,14 @@ const generatePostData = async (event, username) => {
       const response = await axios.get(
         `https://api.line.me/v2/bot/message/${event.message.id}/content`,
         {
+          responseType: 'arraybuffer',
           headers: {
+            'Content-Type': 'image/jpg',
             Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
           },
         },
       );
       console.log('successfully get image');
-      console.log(response);
 
       if (response.status !== 200) {
         throw Error(`failed to get image  status: ${response.status}`);
