@@ -60,6 +60,7 @@ const generatePostData = async (event, username) => {
       }
 
       const body = response.body;
+      print (typeof body);
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
@@ -67,14 +68,14 @@ const generatePostData = async (event, username) => {
       }
       fs.writeFileSync('./image.jpg', body, 'binary');
 
-      return {
-        username,
-        embeds: [{
-          image: {
-            url: './image.jpg',
-          }
-        }],
-      };
+      // return {
+      //   username,
+      //   embeds: [{
+      //     image: {
+      //       url: './image.jpg',
+      //     }
+      //   }],
+      // };
     default:
       return {
         username,
