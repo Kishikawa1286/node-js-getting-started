@@ -34,7 +34,6 @@ const generatePostData = async (event, username) => {
   const type = event.message.type;
   switch (type) {
     case 'text':
-      console.log(event);
       return {
         username,
         content: event.message.text,
