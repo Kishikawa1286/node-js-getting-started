@@ -63,20 +63,22 @@ const uploadImageToGyazo = async (imageDataPath) => {
   return gyazoUrl;
 };
 
-const generatePostData = async (event, username) => {
+const generatePostData = async (event, profile) => {
   // 画像 / テキスト / スタンプ / それ以外で分岐させる
   const type = event.message.type;
   switch (type) {
     case 'text':
       return {
-        username,
+        username: profile.username,
+        "avatar_url": `${profile.pictureUrl}.png`,
         content: event.message.text,
       };
 
     case 'sticker':
       return {
-        username,
-        content: `${username} send a sticker.`,
+        username: profile.username,
+        "avatar_url": `${profile.pictureUrl}.png`,
+        content: `${profile.username} used a sticker.`,
       };
 
     case 'image':
@@ -90,7 +92,8 @@ const generatePostData = async (event, username) => {
       fs.writeFileSync('./image.jpg', encodedImageData, 'binary');
       const gyazoPermaLinkUrl = uploadImageToGyazo('./image.jpg');
       return {
-        username,
+        username: profile.username,
+        "avatar_url": `${profile.pictureUrl}.png`,
         embeds: [{
           image: {
             url: gyazoPermaLinkUrl,
@@ -100,8 +103,9 @@ const generatePostData = async (event, username) => {
 
     default:
       return {
-        username,
-        content: `${username} send a message except sticker and text.`,
+        username: profile.username,
+        "avatar_url": `${profile.pictureUrl}.png`,
+        content: `${profile.username} send a message except sticker and text.`,
       };
   }
 };
@@ -113,7 +117,7 @@ const lineBot = async (req, res) => {
   events.forEach(async (event) => {
     try {
       const profile =  await lineClient.getProfile(event.source.userId);
-      const postData = await generatePostData(event, profile.displayName);
+      const postData = await generatePostData(event, profile);
       console.log(profile);
       // DiscordのWebHookにPOSTする
       await axios.post(webhookUrl, postData, webhookConfig);
