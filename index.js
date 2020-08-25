@@ -29,6 +29,40 @@ express()
   .post('/linehook/', line.middleware(lineConfig), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
+const getImageFromLineMessage = async (event) => {
+  const responseOfGettingImage = await axios.get(
+    `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+    {
+      responseType: 'arraybuffer',
+      headers: {
+        'Content-Type': 'image/jpg',
+        Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
+      },
+    },
+  );
+
+  if (responseOfGettingImage.status !== 200) {
+    throw new Error(`Failed to get image. status: ${responseOfGettingImage.status}`);
+  }
+  console.log('Successfully get image.');
+  
+  return responseOfGettingImage.data;
+};
+
+const uploadImageToGyazo = async (imageDataPath) => {
+  const responseOfUploadingImage = await gyazoClient.upload(
+    imageDataPath,
+    {
+      title: 'image',
+      desc: 'uploaded from mrwombat',
+    },
+  );
+  console.log('Successfully uploaded image to Gyazo.');
+  const gyazoUrl = `${responseOfUploadingImage.data.permalink_url}.jpg`;
+  console.log(`permalink: ${gyazoUrl}`);
+  return gyazoUrl;
+};
+
 const generatePostData = async (event, username) => {
   // 画像 / テキスト / スタンプ / それ以外で分岐させる
   const type = event.message.type;
@@ -38,55 +72,32 @@ const generatePostData = async (event, username) => {
         username,
         content: event.message.text,
       };
+
     case 'sticker':
       return {
         username,
         content: `${username} send a sticker.`,
       };
+
     case 'image':
-      const responseOfGettingImage = await axios.get(
-        `https://api.line.me/v2/bot/message/${event.message.id}/content`,
-        {
-          responseType: 'arraybuffer',
-          headers: {
-            'Content-Type': 'image/jpg',
-            Authorization: `Bearer ${process.env.LINE_ACCESS_TOKEN}`,
-          },
-        },
-      );
-
-      if (responseOfGettingImage.status !== 200) {
-        throw new Error(`Failed to get image. status: ${responseOfGettingImage.status}`);
-      }
-      console.log('Successfully get image.');
-
-      const encodedData = Buffer.from(responseOfGettingImage.data, 'binary');
+      const imageData = await getImageFromLineMessage(event);
+      const encodedImageData = Buffer.from(imageData, 'binary');
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
       } catch(error) {
         console.log('Tried to delete old image.jpg but it did not exist.');
       }
-      fs.writeFileSync('./image.jpg', encodedData, 'binary');
-
-      const responseOfUploadingImage = await gyazoClient.upload(
-        './image.jpg',
-        {
-          title: 'image',
-          desc: 'uploaded from mrwombat',
-        },
-      );
-      console.log('Successfully uploaded image to Gyazo.');
-      const gyazoUrl = `${responseOfUploadingImage.data.permalink_url}.jpg`;
-      console.log(`permalink: ${gyazoUrl}`);
-
+      fs.writeFileSync('./image.jpg', encodedImageData, 'binary');
+      const gyazoPermaLinkUrl = uploadImageToGyazo('./image.jpg');
       return {
         username,
         embeds: [{
           image: {
-            url: gyazoUrl,
+            url: gyazoPermaLinkUrl,
           }
         }],
       };
+
     default:
       return {
         username,
