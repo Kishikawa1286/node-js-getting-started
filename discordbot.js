@@ -39,7 +39,11 @@ const generateMessage = (event) => {
     const imagesWithText = images.concat(
       [{
         type: 'text',
-        text: `(${event.author.username})\n${content}`,
+        text: `${content}`,
+        sender: {
+          name: event.author,
+          iconUrl: event.author.avatarUrl,
+        },
       }]
     );
     return imagesWithText;
