@@ -51,7 +51,7 @@ const generateMessage = (event) => {
 
   console.log(event.author.displayAvatarURL);
   console.log(typeof event.author.displayAvatarURL);
-  console.log(typeof event.author.displayAvatarURL.toString());
+  console.log(typeof event.author.displayAvatarURL().replace('.webp', 'png'));
   
   // テキストのみ
   if (content.length !== 0 && content) {
