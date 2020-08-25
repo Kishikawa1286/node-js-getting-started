@@ -41,8 +41,8 @@ const generateMessage = (event) => {
         type: 'text',
         text: `${content}`,
         sender: {
-          name: event.author,
-          iconUrl: event.author.avatarUrl,
+          name: event.author.username,
+          iconUrl: event.author.displayAvatarURL,
         },
       }]
     );
@@ -55,8 +55,8 @@ const generateMessage = (event) => {
       type: 'text',
       text: `${content}`,
       sender: {
-        name: event.author,
-        iconUrl: event.author.avatarUrl,
+        name: event.author.username,
+        iconUrl: event.author.displayAvatarURL,
       },
     };
   }
