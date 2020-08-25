@@ -48,6 +48,10 @@ const generateMessage = (event) => {
     );
     return imagesWithText;
   }
+
+  console.log(event.author.displayAvatarURL);
+  console.log(typeof event.author.displayAvatarURL);
+  console.log(typeof event.author.displayAvatarURL.toString());
   
   // テキストのみ
   if (content.length !== 0 && content) {
@@ -56,7 +60,7 @@ const generateMessage = (event) => {
       text: `${content}`,
       sender: {
         name: event.author.username,
-        iconUrl: event.author.displayAvatarURL.toString().replace('.webp', '.png'),
+        iconUrl: event.author.displayAvatarURL,
       },
     };
   }
