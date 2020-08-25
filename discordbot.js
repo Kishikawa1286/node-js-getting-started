@@ -20,6 +20,10 @@ const generateMessage = (event) => {
           type: 'image',
           originalContentUrl: attachment.url,
           previewImageUrl: attachment.url,
+          sender: {
+            name: event.author.username,
+            iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
+          },
         };
       }
       return null;
@@ -28,7 +32,11 @@ const generateMessage = (event) => {
     if (images.length === 0) {
       return {
         type: 'text',
-        text: `Discordで ${event.author.username} が非対応の形式のファイルを送信しました。`
+        text: `Discordで非対応の形式のファイルを送信しました。`,
+        sender: {
+          name: event.author.username,
+          iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
+        },
       };
     }
 
@@ -42,7 +50,7 @@ const generateMessage = (event) => {
         text: `${content}`,
         sender: {
           name: event.author.username,
-          iconUrl: event.author.displayAvatarURL,
+          iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
         },
       }]
     );
@@ -68,7 +76,11 @@ const generateMessage = (event) => {
   // 例外
   return {
     type: 'text',
-    text: `Discordで ${event.author.username} が非対応の形式のメッセージを送信しました。`
+    text: `Discordで非対応の形式のメッセージを送信しました。`,
+    sender: {
+      name: event.author.username,
+      iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
+    },
   };
 };
 
