@@ -56,7 +56,7 @@ const generateMessage = (event) => {
       text: `${content}`,
       sender: {
         name: event.author.username,
-        iconUrl: event.author.displayAvatarURL.replace('.webp', '.png'),
+        iconUrl: event.author.displayAvatarURL.toString().replace('.webp', '.png'),
       },
     };
   }
