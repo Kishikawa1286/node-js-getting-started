@@ -69,16 +69,16 @@ const generatePostData = async (event, profile) => {
   switch (type) {
     case 'text':
       return {
-        username: profile.username,
+        username: profile.displayName,
         "avatar_url": `${profile.pictureUrl}.png`,
         content: event.message.text,
       };
 
     case 'sticker':
       return {
-        username: profile.username,
+        username: profile.displayName,
         "avatar_url": `${profile.pictureUrl}.png`,
-        content: `${profile.username} used a sticker.`,
+        content: `${profile.displayName} used a sticker.`,
       };
 
     case 'image':
@@ -92,7 +92,7 @@ const generatePostData = async (event, profile) => {
       fs.writeFileSync('./image.jpg', encodedImageData, 'binary');
       const gyazoPermaLinkUrl = uploadImageToGyazo('./image.jpg');
       return {
-        username: profile.username,
+        username: profile.displayName,
         "avatar_url": `${profile.pictureUrl}.png`,
         embeds: [{
           image: {
@@ -103,9 +103,9 @@ const generatePostData = async (event, profile) => {
 
     default:
       return {
-        username: profile.username,
+        username: profile.displayName,
         "avatar_url": `${profile.pictureUrl}.png`,
-        content: `${profile.username} send a message except sticker and text.`,
+        content: `${profile.displayName} send a message except sticker and text.`,
       };
   }
 };
