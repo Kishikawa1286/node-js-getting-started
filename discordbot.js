@@ -33,16 +33,12 @@ const generateMessage = (event) => {
 
 discordClient.on('message', async (event) => {
   try {
-    if (
-      // BOT自身のメッセージはスルー
-      !event.author.bot
-      // 自前のサーバーのチャンネルのID
-      && event.channel.id == process.env.DISCORD_CHANNEL_ID
-    ) {
+    // BOT自身のメッセージはスルー
+    if (!event.author.bot) {
       const message = generateMessage(event);
       await lineClient.pushMessage(
-        // 自前のグループのID
-        process.env.LINE_GROUP_ID,
+        // 送信先のID
+        process.env.LINE_TARGET_ID,
         message,
       );
     }
