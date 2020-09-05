@@ -2,8 +2,8 @@ const line = require('@line/bot-sdk');
 const discord = require('discord.js');
 
 const lineConfig = {
-  channelAccessToken: process.env.LINE_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_SECRET_KEY
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 const lineClient = new line.Client(lineConfig);
 
