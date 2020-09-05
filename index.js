@@ -5,12 +5,12 @@ const axios = require('axios');
 const PORT = process.env.PORT || 5000;
 
 const lineConfig = {
-  channelAccessToken: process.env.LINE_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_SECRET_KEY
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET
 };
 const lineClient = new line.Client(lineConfig);
 
-const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 const webhookConfig = {
   headers: {
     'Accept': 'application/json',
