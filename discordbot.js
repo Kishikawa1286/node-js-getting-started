@@ -129,16 +129,27 @@ discordClient.on('message', async (event) => {
 discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
   try {
     if (newMember.bot) return;
-    await axios.post(
-      webhookUrl,
-      {
-        username: "Debug Message",
-        content: JSON.stringify(newMember),
-      },
-      webhookConfig
-    );
+    if (oldMember.channel === null && newMember.channel !== null) {
+      await axios.post(
+        webhookUrl,
+        {
+          username: "Debug Message",
+          content: `${newMember.client.username}がボイスチャンネルに入室しました。`,
+        },
+        webhookConfig
+      );
+    }
+    if (oldMember.channel !== null && newMember.channel === null) {
+      await axios.post(
+        webhookUrl,
+        {
+          username: "Debug Message",
+          content: `${newMember.client.username}がボイスチャンネルから退室しました。`,
+        },
+        webhookConfig
+      );
+    }
     // await lineClient.pushMessage(
-    //   // 自前のグループのID
     //   process.env.LINE_GROUP_ID,
     //   {
     //     type: 'text',
