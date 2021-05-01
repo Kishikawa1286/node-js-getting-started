@@ -121,7 +121,7 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
         process.env.LINE_GROUP_ID,
         {
           type: 'text',
-          text: `${newMember.member.displayName}が${channel.name}に入室しました。\nhttps://discord.gg/fxV4PaNf`,
+          text: `${newMember.member.displayName}が${channel.name}に入室しました。\nhttps://discord.gg/UWK7mBsSnV`,
           sender: {
             name: newMember.member.displayName,
             iconUrl: newMember.member.user.displayAvatarURL().replace('.webp', '.png'),
