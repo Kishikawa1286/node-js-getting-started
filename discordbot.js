@@ -131,37 +131,40 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
     if (newMember.bot) return;
     if (oldMember.channel === null && newMember.channel !== null) {
       const channel = await discordClient.channels.fetch(newMember.channelID);
-      await axios.post(
-        webhookUrl,
+      await lineClient.pushMessage(
+        process.env.LINE_GROUP_ID,
         {
-          username: "Debug Message",
-          content:  `${newMember.member.displayName}が${channel.name}に入室しました。`,
+          type: 'text',
+          text: `${newMember.member.displayName}が${channel.name}に入室しました。`,
+          sender: {
+            name: newMember.member.displayName,
+            iconUrl: newMember.member.user.displayAvatarURL().replace('.webp', '.png'),
+          },
         },
-        webhookConfig
       );
     }
     if (oldMember.channel !== null && newMember.channel === null) {
       const channel = await discordClient.channels.fetch(oldMember.channelID);
-      await axios.post(
-        webhookUrl,
+      await lineClient.pushMessage(
+        process.env.LINE_GROUP_ID,
         {
-          username: "Debug Message",
-          content: `${newMember.member.displayName}が${channel.name}から退室しました。`,
+          type: 'text',
+          text: `${newMember.member.displayName}が${channel.name}から退室しました。`,
+          sender: {
+            name: newMember.member.displayName,
+            iconUrl: newMember.member.user.displayAvatarURL().replace('.webp', '.png'),
+          },
         },
-        webhookConfig
       );
+      // await axios.post(
+      //   webhookUrl,
+      //   {
+      //     username: "Debug Message",
+      //     content: `${newMember.member.displayName}が${channel.name}から退室しました。`,
+      //   },
+      //   webhookConfig
+      // );
     }
-    // await lineClient.pushMessage(
-    //   process.env.LINE_GROUP_ID,
-    //   {
-    //     type: 'text',
-    //     text: `${newMember.client.username}が${newMember.channel}に入室しました。`,
-    //     sender: {
-    //       name: newMember.client.username,
-    //       iconUrl: newMember.client.username.displayAvatarURL().replace('.webp', '.png'),
-    //     },
-    //   },
-    // );
   } catch (error) {
     console.error(error);
     try {
