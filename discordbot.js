@@ -129,20 +129,6 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
         },
       );
     }
-    if (oldMember.channel !== null && newMember.channel === null) {
-      const channel = await discordClient.channels.fetch(oldMember.channelID);
-      await lineClient.pushMessage(
-        process.env.LINE_GROUP_ID,
-        {
-          type: 'text',
-          text: `${newMember.member.displayName}が${channel.name}から退室しました。`,
-          sender: {
-            name: newMember.member.displayName,
-            iconUrl: newMember.member.user.displayAvatarURL().replace('.webp', '.png'),
-          },
-        },
-      );
-    }
   } catch (error) {
     console.error(error);
     try {
