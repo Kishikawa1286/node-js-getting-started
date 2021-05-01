@@ -88,11 +88,11 @@ discordClient.on('message', async (message) => {
       // 自前のサーバーのチャンネルのID
       && message.channel.id == process.env.DISCORD_CHANNEL_ID
     ) {
-      const message = generateMessage(message);
+      const msg = generateMessage(message);
       await lineClient.pushMessage(
         // 自前のグループのID
         process.env.LINE_GROUP_ID,
-        message,
+        msg,
       );
     }
   } catch (error) {
