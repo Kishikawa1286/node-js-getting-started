@@ -128,18 +128,27 @@ discordClient.on('message', async (event) => {
 
 discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
   try {
-    await lineClient.pushMessage(
-      // 自前のグループのID
-      process.env.LINE_GROUP_ID,
+    if (newMember.bot) return;
+    await axios.post(
+      webhookUrl,
       {
-        type: 'text',
-        text: `${newMember.client.username}が${newMember.channel.name}に入室しました。`,
-        sender: {
-          name: newMember.client.username,
-          iconUrl: newMember.client.username.displayAvatarURL().replace('.webp', '.png'),
-        },
+        username: "Debug Message",
+        content: `${newMember}`,
       },
+      webhookConfig
     );
+    // await lineClient.pushMessage(
+    //   // 自前のグループのID
+    //   process.env.LINE_GROUP_ID,
+    //   {
+    //     type: 'text',
+    //     text: `${newMember.client.username}が${newMember.channel}に入室しました。`,
+    //     sender: {
+    //       name: newMember.client.username,
+    //       iconUrl: newMember.client.username.displayAvatarURL().replace('.webp', '.png'),
+    //     },
+    //   },
+    // );
   } catch (error) {
     console.error(error);
     try {
