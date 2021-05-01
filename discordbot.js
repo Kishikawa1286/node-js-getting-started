@@ -130,11 +130,12 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
   try {
     if (newMember.bot) return;
     if (oldMember.channel === null && newMember.channel !== null) {
+      const channel = await discordClient.channels.fetch(newMember.channelID)
       await axios.post(
         webhookUrl,
         {
           username: "Debug Message",
-          content: JSON.stringify(await discordClient.channels.fetch(newMember.channelID)),
+          content:  `${newMember.member.displayName}が${channel.name}に入室しました。`,
         },
         webhookConfig
       );
