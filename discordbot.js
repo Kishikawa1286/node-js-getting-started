@@ -114,7 +114,7 @@ discordClient.on('message', async (message) => {
 
 discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
   try {
-    if (newMember.bot) return;
+    if (newMember.member.user.bot) return;
     if (oldMember.channel === null && newMember.channel !== null) {
       const channel = await discordClient.channels.fetch(newMember.channelID);
       await lineClient.pushMessage(
