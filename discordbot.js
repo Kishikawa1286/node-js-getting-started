@@ -134,7 +134,7 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
         webhookUrl,
         {
           username: "Debug Message",
-          content: `${newMember.client.username}がボイスチャンネルに入室しました。`,
+          content:JSON.stringify(discordClient.channels.get(newMember.voiceChannelID)),
         },
         webhookConfig
       );
@@ -144,7 +144,7 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
         webhookUrl,
         {
           username: "Debug Message",
-          content: `${newMember.client.username}がボイスチャンネルから退室しました。`,
+          content: `${newMember.client}がボイスチャンネルから退室しました。`,
         },
         webhookConfig
       );
