@@ -1,5 +1,14 @@
 const line = require('@line/bot-sdk');
 const discord = require('discord.js');
+const axios = require('axios');
+
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+const webhookConfig = {
+  headers: {
+    'Accept': 'application/json',
+    'Content-type': 'application/json',
+  }
+};
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -100,9 +109,52 @@ discordClient.on('message', async (event) => {
         message,
       );
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
+    try {
+      await axios.post(
+        webhookUrl,
+        {
+          username: "Error Message",
+          content: `${error}`,
+        },
+        webhookConfig
+      );
+    } catch (error) {
+      console.error(error);
+    }
   } 
+});
+
+discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
+  try {
+    await lineClient.pushMessage(
+      // 自前のグループのID
+      process.env.LINE_GROUP_ID,
+      {
+        type: 'text',
+        text: `${newMember.client.username}が${newMember.channel.name}に入室しました。`,
+        sender: {
+          name: newMember.client.username,
+          iconUrl: newMember.client.username.displayAvatarURL().replace('.webp', '.png'),
+        },
+      },
+    );
+  } catch (error) {
+    console.error(error);
+    try {
+      await axios.post(
+        webhookUrl,
+        {
+          username: "Error Message",
+          content: `${error}`,
+        },
+        webhookConfig
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
 });
 
 discordClient.login(process.env.DISCORD_ACCESS_TOKEN);

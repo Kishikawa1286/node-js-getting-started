@@ -86,7 +86,7 @@ const generatePostData = async (event, profile) => {
       const encodedImageData = Buffer.from(imageData, 'binary');
       try {
         fs.unlinkSync('./image.jpg'); // 古い image.jpg を消す
-      } catch(error) {
+      } catch (error) {
         console.log('Tried to delete old image.jpg but it did not exist.');
       }
       fs.writeFileSync('./image.jpg', encodedImageData, 'binary');
@@ -121,8 +121,20 @@ const lineBot = async (req, res) => {
       console.log(profile);
       // DiscordのWebHookにPOSTする
       await axios.post(webhookUrl, postData, webhookConfig);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
+      try {
+        await axios.post(
+          webhookUrl,
+          {
+            username: "Error Message",
+            content: `${error}`,
+          },
+          webhookConfig
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   });
 };
