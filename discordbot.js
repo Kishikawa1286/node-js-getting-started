@@ -130,7 +130,7 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
   try {
     if (newMember.bot) return;
     if (oldMember.channel === null && newMember.channel !== null) {
-      const channel = await discordClient.channels.fetch(newMember.channelID)
+      const channel = await discordClient.channels.fetch(newMember.channelID);
       await axios.post(
         webhookUrl,
         {
@@ -141,11 +141,12 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
       );
     }
     if (oldMember.channel !== null && newMember.channel === null) {
+      const channel = await discordClient.channels.fetch(oldMember.channelID);
       await axios.post(
         webhookUrl,
         {
           username: "Debug Message",
-          content: `${newMember.client}がボイスチャンネルから退室しました。`,
+          content: `${newMember.member.displayName}が${channel.name}から退室しました。`,
         },
         webhookConfig
       );
