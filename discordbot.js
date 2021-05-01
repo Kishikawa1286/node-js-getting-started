@@ -133,7 +133,7 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
       webhookUrl,
       {
         username: "Debug Message",
-        content: `${newMember}`,
+        content: `${newMember.toJSON()}`,
       },
       webhookConfig
     );
