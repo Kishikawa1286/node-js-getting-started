@@ -1,14 +1,5 @@
 const line = require('@line/bot-sdk');
 const discord = require('discord.js');
-const axios = require('axios');
-
-const webhookUrl = process.env.DISCORD_WEBHOOK_URL
-const webhookConfig = {
-  headers: {
-    'Accept': 'application/json',
-    'Content-type': 'application/json',
-  }
-};
 
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
@@ -30,7 +21,7 @@ const generateMessage = (event) => {
           originalContentUrl: attachment.url,
           previewImageUrl: attachment.url,
           sender: {
-            name: event.author.username,
+            name: event.member.displayName,
             iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
           },
         };
@@ -43,7 +34,7 @@ const generateMessage = (event) => {
         type: 'text',
         text: `Discordで非対応の形式のファイルを送信しました。`,
         sender: {
-          name: event.author.username,
+          name: event.member.displayName,
           iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
         },
       };
@@ -58,7 +49,7 @@ const generateMessage = (event) => {
         type: 'text',
         text: `${content}`,
         sender: {
-          name: event.author.username,
+          name: event.member.displayName,
           iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
         },
       }]
@@ -66,17 +57,13 @@ const generateMessage = (event) => {
     return imagesWithText;
   }
 
-  console.log(event.author.displayAvatarURL);
-  console.log(typeof event.author.displayAvatarURL);
-  console.log(event.author.displayAvatarURL().replace('.webp', 'png'));
-  
   // テキストのみ
   if (content.length !== 0 && content) {
     return {
       type: 'text',
       text: `${content}`,
       sender: {
-        name: event.author.username,
+        name: event.member.displayName,
         iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
       },
     };
@@ -87,22 +74,21 @@ const generateMessage = (event) => {
     type: 'text',
     text: `Discordで非対応の形式のメッセージを送信しました。`,
     sender: {
-      name: event.author.username,
+      name: event.member.displayName,
       iconUrl: event.author.displayAvatarURL().replace('.webp', '.png'),
     },
   };
 };
 
-discordClient.on('message', async (event) => {
+discordClient.on('message', async (message) => {
   try {
     if (
       // BOT自身のメッセージはスルー
-      event.author.username != 'Mr.Wombat'
-      && !event.author.bot
+      !message.author.bot
       // 自前のサーバーのチャンネルのID
-      && event.channel.id == process.env.DISCORD_CHANNEL_ID
+      && message.channel.id == process.env.DISCORD_CHANNEL_ID
     ) {
-      const message = generateMessage(event);
+      const message = generateMessage(message);
       await lineClient.pushMessage(
         // 自前のグループのID
         process.env.LINE_GROUP_ID,
@@ -156,14 +142,6 @@ discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
           },
         },
       );
-      // await axios.post(
-      //   webhookUrl,
-      //   {
-      //     username: "Debug Message",
-      //     content: `${newMember.member.displayName}が${channel.name}から退室しました。`,
-      //   },
-      //   webhookConfig
-      // );
     }
   } catch (error) {
     console.error(error);
